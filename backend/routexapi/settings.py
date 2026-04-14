@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-6r8c5%k9yf7q!4%@03b6cb+2*)7(u9*c^p96(u&lkw#qw*lrgk
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*'] # allow all hosts
 
 
 # Application definition
@@ -37,7 +37,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'corsheaders',
+    'routes'
 ]
+
+
+#Rest framework config 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES' : {
+        'rest_framework.permissions.AllowAny'
+    }
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -72,10 +83,11 @@ WSGI_APPLICATION = 'routexapi.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+
+# Mysql config 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
     }
 }
 
