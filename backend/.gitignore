@@ -1,0 +1,15 @@
+#  entorno virtual
+venv/
+env/
+
+# variables de entorno
+.env
+
+# logs
+*.log
+
+# Django
+*.pot
+*.pyc
+*.pyo
+*.sqlite3
