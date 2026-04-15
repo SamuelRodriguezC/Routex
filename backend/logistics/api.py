@@ -6,11 +6,6 @@ from rest_framework.decorators import action
 from .models import Status, Priority, Route, ExecutionLog
 from .serializers import ExecutionLogSerializer, StatusSerializer, PrioritySerializer, RouteSerializer
 
-class StatusViewSet(viewsets.ModelViewSet):
-    queryset = Status.objects.all()
-    serializer_class = StatusSerializer
-    permission_classes = [permissions.AllowAny]
-    
     
 
 

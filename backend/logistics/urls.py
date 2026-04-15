@@ -1,8 +1,8 @@
 from rest_framework import routers
-from .api import StatusViewSet,RouteViewSet, ExecutionLogsViewSet
+from .api import RouteViewSet, ExecutionLogsViewSet
 from logistics.views import (
     # RouteViewSet,
-    # StatusViewSet,
+    StatusViewSet,
     PriorityViewSet,
     # ExecutionLogsViewSet,
 )
