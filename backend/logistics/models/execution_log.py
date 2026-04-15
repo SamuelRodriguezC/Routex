@@ -25,7 +25,7 @@ class ExecutionLog(models.Model):
     #  Timestamp de ejecución automática
     execution_time = models.DateTimeField(auto_now_add=True)
 
-    #  Resultado de la ejecución (SUCCESS / ERROR / SKIPPED)
+    #  Resultado de la ejecución (SUCCESS / ERROR)
     result = models.CharField(max_length=50)
 
     #  Mensaje detallado para debugging y trazabilidad
