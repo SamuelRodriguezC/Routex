@@ -16,28 +16,5 @@ from .serializers import ExecutionLogSerializer, StatusSerializer, PrioritySeria
 #     permission_classes = [permissions.AllowAny]
     
     
-class ExecutionLogsViewSet(viewsets.ModelViewSet):
-    queryset = ExecutionLog.objects.all()
-    serializer_class = ExecutionLogSerializer
-    permission_classes = [permissions.AllowAny]
 
 
-class RouteViewSet(viewsets.ModelViewSet):
-    queryset = Route.objects.all()
-    serializer_class = RouteSerializer
-    permission_classes = [permissions.AllowAny]
-
-    @action(detail=False, methods=["post"], url_path="import")
-    def import_routes(self, request):
-
-        file = request.FILES.get("file")
-
-        if not file:
-            return Response(
-                {"error": "Debe enviar un archivo Excel"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        result = RouteImportService.import_routes(file)
-
-        return Response(result, status=status.HTTP_200_OK)
