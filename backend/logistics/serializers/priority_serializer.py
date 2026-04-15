@@ -6,3 +6,4 @@ class PrioritySerializer(serializers.ModelSerializer):
     class Meta:
         model = Priority
         fields = "__all__"
+        read_only_fields = ('id', 'created_at')
