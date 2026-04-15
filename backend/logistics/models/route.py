@@ -47,18 +47,19 @@ class Route(models.Model):
         related_name="routes"
     )
 
-    # class Meta:
+    class Meta:
         # =================================================
         # REGLA CRÍTICA DE NEGOCIO
         # =================================================
         #  Evita duplicidad exacta de rutas en el sistema
         # Esto protege la integridad de la carga desde Excel.
-        # unique_together = (
-        #     "origin",
-        #     "destination",
-        #     "time_window_start",
-        #     "time_window_end",
-        # )
+
+        constraints = [
+            models.UniqueConstraint(
+                fields=["origin", "destination", "time_window_start", "time_window_end"],
+                name="unique_route_window"
+            )
+        ]
 
     def __str__(self):
         return f"{self.origin} → {self.destination}"
