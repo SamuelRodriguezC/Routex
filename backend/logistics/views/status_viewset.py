@@ -1,7 +1,7 @@
 
 from rest_framework import viewsets, permissions
-from logistics.models import Status
-from logistics.serializers import StatusSerializer
+from ..models import Status
+from ..serializers import StatusSerializer
 
 
 class StatusViewSet(viewsets.ModelViewSet):

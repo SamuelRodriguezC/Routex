@@ -1,6 +1,6 @@
 from rest_framework import viewsets, permissions
-from logistics.models import Priority
-from logistics.serializers import PrioritySerializer
+from ..models import Priority
+from ..serializers import PrioritySerializer
 
 class PriorityViewSet(viewsets.ModelViewSet):
     queryset = Priority.objects.all()

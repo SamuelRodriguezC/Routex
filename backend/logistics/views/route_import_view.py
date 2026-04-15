@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from logistics.services.route_import_service import RouteImportService
+from ..services.route_import_service import RouteImportService
 
 
 class RouteImportView(APIView):
