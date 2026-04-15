@@ -1,5 +1,12 @@
 from rest_framework import routers
-from .api import StatusViewSet, PriorityViewSet,RouteViewSet, ExecutionLogsViewSet
+from .api import StatusViewSet,RouteViewSet, ExecutionLogsViewSet
+from logistics.views import (
+    # RouteViewSet,
+    # StatusViewSet,
+    PriorityViewSet,
+    # ExecutionLogsViewSet,
+)
+
 
 # Creamos un router que generará las rutas automáticamente.
 router = routers.DefaultRouter()

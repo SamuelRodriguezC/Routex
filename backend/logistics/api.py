@@ -12,10 +12,7 @@ class StatusViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny]
     
     
-class PriorityViewSet(viewsets.ModelViewSet):
-    queryset = Priority.objects.all()
-    serializer_class = PrioritySerializer
-    permission_classes = [permissions.AllowAny]
+
 
 
 # class RouteViewSet(viewsets.ModelViewSet):
