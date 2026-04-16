@@ -1,3 +1,5 @@
+import { Status } from "./status.model";
+
 export interface Route {
   id: number;
   origin: string;
@@ -12,5 +14,7 @@ export interface Route {
 
   status: number;
   priority: number;
+
+  status_detail?: Status; // 👈 importante
 
 }

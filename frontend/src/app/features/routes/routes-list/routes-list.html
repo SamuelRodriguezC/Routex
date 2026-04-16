@@ -90,17 +90,18 @@
               </td>
 
               <!-- Estado -->
-              <td>
-                <span class="badge badge-info">
-                  {{ route.status }}
-                </span>
-              </td>
+                <td>
+                  <span
+                    class="badge"
+                    [ngClass]="getStatusBadgeClass(route.status_detail?.description)"
+                  >
+                    {{ route.status_detail?.description ?? 'UNKNOWN' }}
+                  </span>
+                </td>
 
               <!-- Prioridad -->
               <td>
-                <span class="badge badge-warning">
                   {{ route.priority }}
-                </span>
               </td>
 
               <!-- Acciones -->
