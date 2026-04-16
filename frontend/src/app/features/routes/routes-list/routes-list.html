@@ -1,5 +1,5 @@
-<div class="p-6 space-y-4">
-
+<div class="p-6 space-y-6 flex flex-col justify-start">
+  <!-- Header -->
   <div class="flex justify-between items-center">
     <h1 class="text-2xl font-bold">
       Rutas 📦
@@ -12,90 +12,122 @@
     ></p-button>
   </div>
 
-  <!-- Modal Form -->
+  <!-- Modal -->
   <app-route-form
     [visible]="showModal()"
     (visibleChange)="showModal.set($event)"
     (saved)="onSaved()"
   ></app-route-form>
 
+  <!-- Loading -->
   @if (loading()) {
-    <p>Cargando rutas...</p>
+    <p class="text-sm opacity-70">Cargando rutas...</p>
   }
 
+  <!-- Table -->
   @if (!loading()) {
 
     <div class="overflow-x-auto">
-      <table class="min-w-full border border-gray-200 rounded-lg overflow-hidden">
 
-        <thead class="bg-gray-100 text-left text-sm font-semibold text-gray-700">
+      <table class="table table-zebra">
+
+        <!-- HEAD -->
+        <thead>
           <tr>
-            <th class="p-3">ID</th>
-            <th class="p-3">Origen</th>
-            <th class="p-3">Destino</th>
-            <th class="p-3">Distancia (km)</th>
-            <th class="p-3">Inicio ventana</th>
-            <th class="p-3">Fin ventana</th>
-            <th class="p-3">Estado</th>
-            <th class="p-3">Prioridad</th>
-            <th class="p-3">Acciones</th>
+            <th>ID</th>
+            <th>Ruta</th>
+            <th>Distancia</th>
+            <th>Ventana inicio</th>
+            <th>Ventana fin</th>
+            <th>Estado</th>
+            <th>Prioridad</th>
+            <th>Acciones</th>
           </tr>
         </thead>
 
-        <tbody class="text-sm text-gray-700">
+        <tbody>
 
           @for (route of routes(); track route.id) {
-            <tr class="border-t hover:bg-gray-50 transition">
+            <tr>
 
-              <td class="p-3 font-medium">
+              <!-- ID -->
+              <th>
                 {{ route.id }}
+              </th>
+
+              <!-- Ruta (Origen → Destino estilo bonito) -->
+              <td>
+                <div class="flex flex-col">
+                  <div class="font-bold">
+                    {{ route.origin }} → {{ route.destination }}
+                  </div>
+                  <div class="text-xs opacity-60">
+                    Ruta logística
+                  </div>
+                </div>
               </td>
 
-              <td class="p-3">
-                {{ route.origin }}
+              <!-- Distancia -->
+              <td>
+                {{ route.distance_km }} km
               </td>
 
-              <td class="p-3">
-                {{ route.destination }}
-              </td>
-
-              <td class="p-3">
-                {{ route.distance_km }}
-              </td>
-
-              <td class="p-3">
+              <!-- Time window start -->
+              <td>
                 {{ route.time_window_start }}
               </td>
 
-              <td class="p-3">
+              <!-- Time window end -->
+              <td>
                 {{ route.time_window_end }}
               </td>
 
-              <td class="p-3">
-                {{ route.status }}
+              <!-- Estado -->
+              <td>
+                <span class="badge badge-info">
+                  {{ route.status }}
+                </span>
               </td>
 
-              <td class="p-3">
-                {{ route.priority }}
+              <!-- Prioridad -->
+              <td>
+                <span class="badge badge-warning">
+                  {{ route.priority }}
+                </span>
               </td>
 
-              <!-- ⚙️ ACCIONES -->
-              <td class="p-3">
+              <!-- Acciones -->
+              <th>
                 <button
-                  class="px-3 py-1 rounded bg-blue-500 text-white hover:bg-blue-600 transition"
+                  class="btn btn-ghost btn-xs"
                   (click)="editRoute(route.id)"
                 >
                   ✏️ Editar
                 </button>
-              </td>
+              </th>
 
             </tr>
           }
 
         </tbody>
-      </table>
-    </div>
 
+        <!-- FOOT -->
+        <tfoot>
+          <tr>
+            <th>ID</th>
+            <th>Ruta</th>
+            <th>Distancia</th>
+            <th>Inicio</th>
+            <th>Fin</th>
+            <th>Estado</th>
+            <th>Prioridad</th>
+            <th></th>
+          </tr>
+        </tfoot>
+
+      </table>
+
+    </div>
   }
 
 </div>
