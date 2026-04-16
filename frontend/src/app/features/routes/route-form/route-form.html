@@ -20,7 +20,15 @@
 
     <div>
       <label>Distancia (km)</label>
-      <p-inputNumber formControlName="distance_km" class="w-full" [min]="0.01" />
+        <p-inputNumber
+        formControlName="distance_km"
+        class="w-full"
+        mode="decimal"
+        [useGrouping]="false"
+        [minFractionDigits]="0"
+        [maxFractionDigits]="3"
+        locale="en-US"
+        ></p-inputNumber>
     </div>
 
     <div>
