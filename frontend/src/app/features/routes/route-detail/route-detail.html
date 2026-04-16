@@ -1,29 +1,133 @@
-<form [formGroup]="form" (ngSubmit)="submit()">
+<form
+  [formGroup]="form"
+  (ngSubmit)="submit()"
+  class="max-w-3xl mx-auto bg-base-100 shadow-lg rounded-2xl p-6 space-y-6 mt-10"
+>
 
-  <input type="text" formControlName="origin" placeholder="Origen" />
-  <input type="text" formControlName="destination" placeholder="Destino" />
+  <!-- HEADER -->
+  <div class="border-b pb-4">
+    <h2 class="text-xl font-bold">Crear / Editar Ruta 📦</h2>
+    <p class="text-sm text-gray-500">
+      Completa la información de la ruta correctamente
+    </p>
+  </div>
 
-  <input type="number" formControlName="distance_km" placeholder="Distancia (km)" />
+  <!-- GRID PRINCIPAL -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-  <input type="datetime-local" formControlName="time_window_start" />
-  <input type="datetime-local" formControlName="time_window_end" />
+    <!-- ORIGEN -->
+    <div class="form-control">
+      <label class="label">
+        <span class="label-text">Origen</span>
+      </label>
+      <input
+        type="text"
+        formControlName="origin"
+        placeholder="Ej: Medellín"
+        class="input input-bordered w-full"
+      />
+    </div>
 
-  <!-- STATUS -->
-  <select formControlName="status">
-    <option *ngFor="let s of statuses" [value]="s.value">
-      {{ s.label }}
-    </option>
-  </select>
+    <!-- DESTINO -->
+    <div class="form-control">
+      <label class="label">
+        <span class="label-text">Destino</span>
+      </label>
+      <input
+        type="text"
+        formControlName="destination"
+        placeholder="Ej: Bogotá"
+        class="input input-bordered w-full"
+      />
+    </div>
 
-  <!-- PRIORITY -->
-  <select formControlName="priority">
-    <option *ngFor="let p of priorities" [value]="p.value">
-      {{ p.label }}
-    </option>
-  </select>
+    <!-- DISTANCIA -->
+    <div class="form-control">
+      <label class="label">
+        <span class="label-text">Distancia (km)</span>
+      </label>
+      <input
+        type="number"
+        formControlName="distance_km"
+        placeholder="Ej: 415"
+        class="input input-bordered w-full"
+      />
+    </div>
 
-  <button type="submit" [disabled]="form.invalid || loading">
-    Guardar cambios
-  </button>
+    <!-- STATUS -->
+    <div class="form-control">
+      <label class="label">
+        <span class="label-text">Estado</span>
+      </label>
+      <select
+        formControlName="status"
+        class="select select-bordered w-full"
+      >
+        <option disabled value="">Selecciona un estado</option>
+        <option *ngFor="let s of statuses" [value]="s.value">
+          {{ s.label }}
+        </option>
+      </select>
+    </div>
+
+    <!-- PRIORITY -->
+    <div class="form-control">
+      <label class="label">
+        <span class="label-text">Prioridad</span>
+      </label>
+      <select
+        formControlName="priority"
+        class="select select-bordered w-full"
+      >
+        <option disabled value="">Selecciona prioridad</option>
+        <option *ngFor="let p of priorities" [value]="p.value">
+          {{ p.label }}
+        </option>
+      </select>
+    </div>
+
+    <!-- FECHAS -->
+    <div class="form-control">
+      <label class="label">
+        <span class="label-text">Inicio ventana de tiempo</span>
+      </label>
+      <input
+        type="datetime-local"
+        formControlName="time_window_start"
+        class="input input-bordered w-full"
+      />
+    </div>
+
+    <div class="form-control">
+      <label class="label">
+        <span class="label-text">Fin ventana de tiempo</span>
+      </label>
+      <input
+        type="datetime-local"
+        formControlName="time_window_end"
+        class="input input-bordered w-full"
+      />
+    </div>
+
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="flex justify-end gap-3 pt-4 border-t">
+    <button
+      type="button"
+      class="btn btn-ghost"
+      (click)="form.reset()"
+    >
+      Limpiar
+    </button>
+
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="form.invalid || loading"
+    >
+      {{ loading ? 'Guardando...' : 'Guardar cambios' }}
+    </button>
+  </div>
 
 </form>
