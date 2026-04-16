@@ -1,8 +1,10 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+
 import { getStatusBadgeClass } from '../../../shared/utils/helpers/route-status.helper';
 import { formatDate } from '../../../shared/utils/helpers/date-format.helper';
+
 import { RouteService } from '../../../core/services/route.service';
 import { Route } from '../../../core/models/route.model';
 
@@ -24,15 +26,14 @@ export class RoutesList implements OnInit {
   routes = signal<Route[]>([]);
   loading = signal(true);
 
-  getStatusBadgeClass = getStatusBadgeClass;
-
   showModal = signal(false);
+
+  selectedRoute = signal<Route | null>(null);
+
+  getStatusBadgeClass = getStatusBadgeClass;
   formatDate = formatDate;
 
-  constructor(
-    private routeService: RouteService,
-    private router: Router
-  ) {}
+  constructor(private routeService: RouteService) {}
 
   ngOnInit() {
     this.loadRoutes();
@@ -53,15 +54,19 @@ export class RoutesList implements OnInit {
     });
   }
 
+  // 🆕 CREAR
   openCreate() {
+    this.selectedRoute.set(null);
+    this.showModal.set(true);
+  }
+
+  // ✏️ EDITAR (AQUÍ ESTÁ EL CAMBIO IMPORTANTE)
+  editRoute(route: Route) {
+    this.selectedRoute.set(route);
     this.showModal.set(true);
   }
 
   onSaved() {
     this.loadRoutes();
-  }
-
-  editRoute(id: number) {
-    this.router.navigate(['/routes', id]);
   }
 }

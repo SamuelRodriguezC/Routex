@@ -1,5 +1,5 @@
 <p-dialog
-  header="Crear Ruta"
+  [header]="mode === 'edit' ? 'Editar Ruta' : 'Crear Ruta'"
   [(visible)]="visible"
   [modal]="true"
   [style]="{ width: '40rem' }"
@@ -20,7 +20,7 @@
 
     <div>
       <label>Distancia (km)</label>
-        <p-inputNumber
+      <p-inputNumber
         formControlName="distance_km"
         class="w-full"
         mode="decimal"
@@ -28,37 +28,38 @@
         [minFractionDigits]="0"
         [maxFractionDigits]="3"
         locale="en-US"
-        ></p-inputNumber>
+      ></p-inputNumber>
     </div>
 
     <div>
       <label>Prioridad</label>
-     <p-select
+      <p-select
         [options]="priorityOptions()"
         formControlName="priority"
         class="w-full"
         placeholder="Seleccione prioridad"
-        ></p-select>
+      ></p-select>
     </div>
 
     <div>
       <label>Inicio ventana</label>
-      <p-datepicker 
+      <p-datepicker
         formControlName="time_window_start"
-[showTime]="true"
-        hourFormat="24"
+        [showTime]="true"
+        hourFormat="12"
         class="w-full"
-      ></p-datepicker >
+        
+      ></p-datepicker>
     </div>
 
     <div>
       <label>Fin ventana</label>
-      <p-datepicker 
+      <p-datepicker
         formControlName="time_window_end"
         [showTime]="true"
-        hourFormat="24"
+        hourFormat="12"
         class="w-full"
-      ></p-datepicker >
+      ></p-datepicker>
     </div>
 
     <div>
@@ -84,6 +85,7 @@
     }
 
     <div class="flex justify-end gap-2 pt-4">
+
       <p-button
         label="Cancelar"
         severity="secondary"
@@ -91,11 +93,12 @@
       ></p-button>
 
       <p-button
-        label="Guardar"
+        [label]="mode === 'edit' ? 'Actualizar' : 'Guardar'"
         (click)="submit()"
         [loading]="submitting()"
         [disabled]="form.invalid"
       ></p-button>
+
     </div>
 
   </form>

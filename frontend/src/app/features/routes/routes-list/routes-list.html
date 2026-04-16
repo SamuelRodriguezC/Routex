@@ -17,6 +17,9 @@
     [visible]="showModal()"
     (visibleChange)="showModal.set($event)"
     (saved)="onSaved()"
+
+    [routeToEdit]="selectedRoute()"
+    [mode]="selectedRoute() ? 'edit' : 'create'"
   ></app-route-form>
 
   <!-- Loading -->
@@ -108,7 +111,7 @@
               <th>
                 <button
                   class="btn btn-ghost btn-xs"
-                  (click)="editRoute(route.id)"
+                  (click)="editRoute(route)"
                 >
                   ✏️ Editar
                 </button>
