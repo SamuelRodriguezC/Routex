@@ -21,7 +21,7 @@ export const routes: Routes = [
   {
     path: 'import',
     loadComponent: () =>
-      import('./features/import/import.page')
+      import('./features/routes/import/import.page')
         .then(m => m.ImportPage)
   }
 ];

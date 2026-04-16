@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouteService } from '../../core/services/route.service';
+import { RouteService } from '../../../core/services/route.service';
 
 @Component({
   selector: 'app-import-page',
