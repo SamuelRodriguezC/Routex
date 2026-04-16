@@ -34,6 +34,7 @@
         <!-- HEAD -->
         <thead>
           <tr>
+            <th></th>
             <th>ID</th>
             <th>Ruta</th>
             <th>Distancia</th>
@@ -49,6 +50,12 @@
 
           @for (route of routes(); track route.id) {
             <tr>
+              <!-- Checkbox row -->
+              <th>
+                <label>
+                  <input type="checkbox" class="checkbox" />
+                </label>
+              </th>
 
               <!-- ID -->
               <th>
