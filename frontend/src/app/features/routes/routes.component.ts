@@ -19,12 +19,16 @@ export class RoutesComponent implements OnInit {
   }
 
   loadRoutes() {
+    this.loading.set(true);
+
     this.routeService.getRoutes().subscribe({
       next: (data) => {
+        console.log('ROUTES FRONT:', data);
         this.routes.set(data);
         this.loading.set(false);
       },
-      error: () => {
+      error: (err) => {
+        console.error('ERROR API:', err);
         this.loading.set(false);
       }
     });

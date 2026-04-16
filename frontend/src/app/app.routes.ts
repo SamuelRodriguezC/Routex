@@ -7,12 +7,12 @@ export const routes: Routes = [
 //       import('./features/dashboard/dashboard.page')
 //         .then(m => m.DashboardPage)
 //   },
-//   {
-//     path: 'routes',
-//     loadComponent: () =>
-//       import('./features/routes/pages/routes.page')
-//         .then(m => m.RoutesPage)
-//   },
+  {
+    path: 'routes',
+    loadComponent: () =>
+      import('./features/routes/routes.component')
+        .then(m => m.RoutesComponent)
+  },
 //   {
 //     path: 'logs',
 //     loadComponent: () =>

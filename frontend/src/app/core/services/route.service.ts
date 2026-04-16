@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Route } from '../../shared/models/route.model';
+import { tap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class RouteService {
@@ -11,7 +12,9 @@ export class RouteService {
   constructor(private http: HttpClient) {}
 
   getRoutes() {
-    return this.http.get<Route[]>(this.api);
+    return this.http.get<Route[]>(this.api).pipe(
+      tap(res => console.log('API RESPONSE:', res))
+    );
   }
 
   createRoute(route: Route) {
@@ -26,7 +29,7 @@ export class RouteService {
   }
 
   executeRoutes(routeIds: number[]) {
-    return this.http.post(`${this.api}/execute`, {
+    return this.http.post(`${this.api}execute`, {
       routes: routeIds
     });
   }
