@@ -24,6 +24,7 @@ class RouteSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
         ]
+        validators = [] 
         read_only_fields = ("id", "created_at", "updated_at")
 
     # =====================================================
@@ -32,12 +33,12 @@ class RouteSerializer(serializers.ModelSerializer):
 
     def validate_origin(self, value):
         if not value or not value.strip():
-            raise serializers.ValidationError("Origin no puede estar vacío")
+            raise serializers.ValidationError("Origen no puede estar vacío")
         return value.strip()
 
     def validate_destination(self, value):
         if not value or not value.strip():
-            raise serializers.ValidationError("Destination no puede estar vacío")
+            raise serializers.ValidationError("Destino no puede estar vacío")
         return value.strip()
 
     def validate_distance_km(self, value):
@@ -52,7 +53,7 @@ class RouteSerializer(serializers.ModelSerializer):
 
     def validate_priority(self, value):
         if value is None or value.id <= 0:
-            raise serializers.ValidationError("Invalid priority")
+            raise serializers.ValidationError("Prioridad inválida")
         return value
 
     # =====================================================
@@ -63,19 +64,34 @@ class RouteSerializer(serializers.ModelSerializer):
         start = data.get("time_window_start")
         end = data.get("time_window_end")
 
-        if start and end and start >= end:
-            raise serializers.ValidationError(
-                "time_window_start debe ser anterior a time_window_end"
-            )
+        if start:
+            start = start.replace(second=0, microsecond=0)
+            data["time_window_start"] = start
 
-        if Route.objects.filter(
+        if end:
+            end = end.replace(microsecond=0)
+            data["time_window_end"] = end
+
+        if start and end and start >= end:
+            raise serializers.ValidationError({
+                "time_window_start": "Debe ser menor que time_window_end"
+            })
+
+        queryset = Route.objects.filter(
             origin=data.get("origin"),
             destination=data.get("destination"),
             time_window_start=start,
             time_window_end=end,
-        ).exists():
-            raise serializers.ValidationError(
-                "Duplicate route detected (origin, destination, time window)"
-            )
+        )
+
+        if self.instance:
+            queryset = queryset.exclude(id=self.instance.id)
+
+        if queryset.exists():
+            raise serializers.ValidationError({
+                "non_field_errors": [
+                    "Ruta duplicada detectada (origen, destino, ventana de tiempo)"
+                ]
+            })
 
         return data

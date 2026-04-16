@@ -139,6 +139,7 @@ export class RouteFormComponent implements OnChanges {
 
         if (err.error?.non_field_errors) {
           this.errorMessage.set(err.error.non_field_errors[0]);
+          this.form.setErrors({ duplicate: true });
         } else {
           this.errorMessage.set('Error al crear la ruta');
         }
