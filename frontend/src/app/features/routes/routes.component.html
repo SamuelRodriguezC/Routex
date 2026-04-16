@@ -1,0 +1,29 @@
+<div class="p-6 space-y-4">
+
+  <h1 class="text-2xl font-bold">
+    Rutas 📦
+  </h1>
+
+  @if (loading()) {
+    <p>Cargando rutas...</p>
+  }
+
+  @if (!loading()) {
+    <div class="grid gap-3">
+
+      @for (route of routes(); track route.id) {
+        <div class="border p-3 rounded shadow-sm">
+          <h2 class="font-semibold">
+            {{ route.origin }}
+          </h2>
+
+          <p class="text-sm text-gray-500">
+            ID: {{ route.id }}
+          </p>
+        </div>
+      }
+
+    </div>
+  }
+
+</div>

@@ -45,9 +45,9 @@ INSTALLED_APPS = [
 
 #Rest framework config 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES' : {
+    'DEFAULT_PERMISSION_CLASSES' : [
         'rest_framework.permissions.AllowAny'
-    }
+    ]
 }
 
 MIDDLEWARE = [
@@ -58,6 +58,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
 ]
 
 ROOT_URLCONF = 'routexapi.urls'
@@ -140,3 +142,8 @@ STATIC_URL = 'static/'
 # CORS HEADERS to Allow
 CORS_ORIGIN_ALLOW_ALL = True
 CORTS_ALLOW_CREDENTIALS = True
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:4200",
+]
