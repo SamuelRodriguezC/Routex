@@ -2,7 +2,7 @@ from django.db import transaction
 from logistics.models import Route, ExecutionLog, Status
 
 
-class RouteExecutionService:
+class RoutesExecutionService:
 
     @staticmethod
     def execute_routes(route_ids):

@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import action
 from ..services.route_import_service import RouteImportService
-from ..services.route_execution_service import RouteExecutionService
+from ..services.route_execution_service import RoutesExecutionService
 
 
 class RouteViewSet(viewsets.ModelViewSet):
@@ -41,6 +41,6 @@ class RouteViewSet(viewsets.ModelViewSet):
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
-            result = RouteExecutionService.execute_routes(route_ids)
+            result = RoutesExecutionService.execute_routes(route_ids)
 
             return Response(result, status=status.HTTP_200_OK)
