@@ -1,13 +1,13 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { RouteService } from './../../core/services/route.service';
-import { Route } from '../../core/models/route.model';
+import { RouteService } from '../../../core/services/route.service';
+import { Route } from '../../../core/models/route.model';
 
 @Component({
   selector: 'app-routes',
   standalone: true,
-  templateUrl: './routes.component.html'
+  templateUrl: './routes-list.html'
 })
-export class RoutesComponent implements OnInit {
+export class RoutesList implements OnInit {
 
   routes = signal<Route[]>([]);
   loading = signal(true);

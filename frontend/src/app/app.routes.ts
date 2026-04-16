@@ -9,9 +9,8 @@ export const routes: Routes = [
 //   },
   {
     path: 'routes',
-    loadComponent: () =>
-      import('./features/routes/routes.component')
-        .then(m => m.RoutesComponent)
+    loadChildren: () => import('./features/routes/routes.urls')
+      .then(m => m.ROUTES_URLS)
   },
 //   {
 //     path: 'logs',
