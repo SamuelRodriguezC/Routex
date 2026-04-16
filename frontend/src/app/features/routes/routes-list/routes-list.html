@@ -1,8 +1,23 @@
 <div class="p-6 space-y-4">
 
-  <h1 class="text-2xl font-bold">
-    Rutas 📦
-  </h1>
+  <div class="flex justify-between items-center">
+    <h1 class="text-2xl font-bold">
+      Rutas 📦
+    </h1>
+
+    <p-button
+      label="Crear Ruta"
+      icon="pi pi-plus"
+      (click)="openCreate()"
+    ></p-button>
+  </div>
+
+  <!-- Modal Form -->
+  <app-route-form
+    [visible]="showModal()"
+    (visibleChange)="showModal.set($event)"
+    (saved)="onSaved()"
+  ></app-route-form>
 
   @if (loading()) {
     <p>Cargando rutas...</p>
@@ -13,7 +28,6 @@
     <div class="overflow-x-auto">
       <table class="min-w-full border border-gray-200 rounded-lg overflow-hidden">
 
-        <!-- HEADER -->
         <thead class="bg-gray-100 text-left text-sm font-semibold text-gray-700">
           <tr>
             <th class="p-3">ID</th>
@@ -27,7 +41,6 @@
           </tr>
         </thead>
 
-        <!-- BODY -->
         <tbody class="text-sm text-gray-700">
 
           @for (route of routes(); track route.id) {

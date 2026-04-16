@@ -1,0 +1,95 @@
+<p-dialog
+  header="Crear Ruta"
+  [(visible)]="visible"
+  [modal]="true"
+  [style]="{ width: '40rem' }"
+  (onHide)="close()"
+>
+
+  <form [formGroup]="form" class="space-y-4">
+
+    <div>
+      <label>Origen</label>
+      <input pInputText formControlName="origin" class="w-full" />
+    </div>
+
+    <div>
+      <label>Destino</label>
+      <input pInputText formControlName="destination" class="w-full" />
+    </div>
+
+    <div>
+      <label>Distancia (km)</label>
+      <p-inputNumber formControlName="distance_km" class="w-full" [min]="0.01" />
+    </div>
+
+    <div>
+      <label>Prioridad</label>
+     <p-select
+        [options]="priorityOptions()"
+        formControlName="priority"
+        class="w-full"
+        placeholder="Seleccione prioridad"
+        ></p-select>
+    </div>
+
+    <div>
+      <label>Inicio ventana</label>
+      <p-datepicker 
+        formControlName="time_window_start"
+[showTime]="true"
+        hourFormat="24"
+        class="w-full"
+      ></p-datepicker >
+    </div>
+
+    <div>
+      <label>Fin ventana</label>
+      <p-datepicker 
+        formControlName="time_window_end"
+        [showTime]="true"
+        hourFormat="24"
+        class="w-full"
+      ></p-datepicker >
+    </div>
+
+    <div>
+      <label>Status</label>
+      <p-select
+        [options]="statusOptions()"
+        formControlName="status"
+        class="w-full"
+        placeholder="Seleccione estado"
+      ></p-select>
+    </div>
+
+    @if (form.errors?.['invalidWindow']) {
+      <small class="text-red-500">
+        La fecha inicio debe ser menor que la fecha fin
+      </small>
+    }
+
+    @if (errorMessage()) {
+      <div class="text-red-500 text-sm">
+        {{ errorMessage() }}
+      </div>
+    }
+
+    <div class="flex justify-end gap-2 pt-4">
+      <p-button
+        label="Cancelar"
+        severity="secondary"
+        (click)="close()"
+      ></p-button>
+
+      <p-button
+        label="Guardar"
+        (click)="submit()"
+        [loading]="submitting()"
+        [disabled]="form.invalid"
+      ></p-button>
+    </div>
+
+  </form>
+
+</p-dialog>
