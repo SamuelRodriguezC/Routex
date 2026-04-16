@@ -1,0 +1,29 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+
+  <input type="text" formControlName="origin" placeholder="Origen" />
+  <input type="text" formControlName="destination" placeholder="Destino" />
+
+  <input type="number" formControlName="distance_km" placeholder="Distancia (km)" />
+
+  <input type="datetime-local" formControlName="time_window_start" />
+  <input type="datetime-local" formControlName="time_window_end" />
+
+  <!-- STATUS -->
+  <select formControlName="status">
+    <option *ngFor="let s of statuses" [value]="s.value">
+      {{ s.label }}
+    </option>
+  </select>
+
+  <!-- PRIORITY -->
+  <select formControlName="priority">
+    <option *ngFor="let p of priorities" [value]="p.value">
+      {{ p.label }}
+    </option>
+  </select>
+
+  <button type="submit" [disabled]="form.invalid || loading">
+    Guardar cambios
+  </button>
+
+</form>

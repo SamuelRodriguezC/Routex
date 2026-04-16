@@ -37,6 +37,14 @@ export class RouteService {
       routes: routeIds
     });
   }
+
+  getRouteById(id: number) {
+    return this.http.get<Route>(`${this.api}${id}/`);
+  }
+
+  updateRoute(id: number, route: Route) {
+    return this.http.put<Route>(`${this.api}${id}/`, route);
+  }
 }
 
 
