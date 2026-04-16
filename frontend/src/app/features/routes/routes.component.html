@@ -9,21 +9,69 @@
   }
 
   @if (!loading()) {
-    <div class="grid gap-3">
 
-      @for (route of routes(); track route.id) {
-        <div class="border p-3 rounded shadow-sm">
-          <h2 class="font-semibold">
-            {{ route.origin }}
-          </h2>
+    <div class="overflow-x-auto">
+      <table class="min-w-full border border-gray-200 rounded-lg overflow-hidden">
 
-          <p class="text-sm text-gray-500">
-            ID: {{ route.id }}
-          </p>
-        </div>
-      }
+        <!-- HEADER -->
+        <thead class="bg-gray-100 text-left text-sm font-semibold text-gray-700">
+          <tr>
+            <th class="p-3">ID</th>
+            <th class="p-3">Origen</th>
+            <th class="p-3">Destino</th>
+            <th class="p-3">Distancia (km)</th>
+            <th class="p-3">Inicio ventana</th>
+            <th class="p-3">Fin ventana</th>
+            <th class="p-3">Estado</th>
+            <th class="p-3">Prioridad</th>
+          </tr>
+        </thead>
 
+        <!-- BODY -->
+        <tbody class="text-sm text-gray-700">
+
+          @for (route of routes(); track route.id) {
+            <tr class="border-t hover:bg-gray-50 transition">
+
+              <td class="p-3 font-medium">
+                {{ route.id }}
+              </td>
+
+              <td class="p-3">
+                {{ route.origin }}
+              </td>
+
+              <td class="p-3">
+                {{ route.destination }}
+              </td>
+
+              <td class="p-3">
+                {{ route.distance_km }}
+              </td>
+
+              <td class="p-3">
+                {{ route.time_window_start }}
+              </td>
+
+              <td class="p-3">
+                {{ route.time_window_end }}
+              </td>
+
+              <td class="p-3">
+                {{ route.status }}
+              </td>
+
+              <td class="p-3">
+                {{ route.priority }}
+              </td>
+
+            </tr>
+          }
+
+        </tbody>
+      </table>
     </div>
+
   }
 
 </div>
