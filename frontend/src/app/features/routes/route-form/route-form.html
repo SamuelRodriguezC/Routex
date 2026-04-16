@@ -6,19 +6,22 @@
   (onHide)="close()"
 >
 
-  <form [formGroup]="form" class="space-y-4">
+  <form [formGroup]="form" class="grid grid-cols-6 gap-4">
 
-    <div>
+    <!-- ORIGEN -->
+    <div class="col-span-3 flex flex-col gap-1">
       <label>Origen</label>
       <input pInputText formControlName="origin" class="w-full" />
     </div>
 
-    <div>
+    <!-- DESTINO -->
+    <div class="col-span-3 flex flex-col gap-1">
       <label>Destino</label>
       <input pInputText formControlName="destination" class="w-full" />
     </div>
 
-    <div>
+    <!-- DISTANCIA -->
+    <div class="col-span-3 flex flex-col gap-1">
       <label>Distancia (km)</label>
       <p-inputNumber
         formControlName="distance_km"
@@ -31,7 +34,8 @@
       ></p-inputNumber>
     </div>
 
-    <div>
+    <!-- PRIORIDAD -->
+    <div class="col-span-3 flex flex-col gap-1">
       <label>Prioridad</label>
       <p-select
         [options]="priorityOptions()"
@@ -41,50 +45,59 @@
       ></p-select>
     </div>
 
-    <div>
+    <!-- INICIO -->
+    <div class="col-span-3 flex flex-col gap-1">
       <label>Inicio ventana</label>
-      <p-datepicker
-        formControlName="time_window_start"
-        [showTime]="true"
-        hourFormat="12"
-        class="w-full"
-        
-      ></p-datepicker>
+        <p-datepicker
+          formControlName="time_window_start"
+          [showTime]="true"
+          hourFormat="12"
+          class="w-full"
+          appendTo="body"
+        ></p-datepicker>
     </div>
 
-    <div>
+    <!-- FIN -->
+    <div class="col-span-3 flex flex-col gap-1">
       <label>Fin ventana</label>
       <p-datepicker
         formControlName="time_window_end"
         [showTime]="true"
         hourFormat="12"
         class="w-full"
+        appendTo="body"
       ></p-datepicker>
     </div>
 
-    <div>
+        <!-- STATUS -->
+    <div class="col-span-2 flex flex-col gap-1">
       <label>Status</label>
       <p-select
         [options]="statusOptions()"
         formControlName="status"
         class="w-full"
+          appendTo="body"
         placeholder="Seleccione estado"
       ></p-select>
     </div>
 
-    @if (form.errors?.['invalidWindow']) {
-      <small class="text-red-500">
-        La fecha inicio debe ser menor que la fecha fin
-      </small>
-    }
+    <!-- VALIDACIONES -->
+    <div class="col-span-6">
+      @if (form.errors?.['invalidWindow']) {
+        <small class="text-red-500">
+          La fecha inicio debe ser menor que la fecha fin
+        </small>
+      }
 
-    @if (errorMessage()) {
-      <div class="text-red-500 text-sm">
-        {{ errorMessage() }}
-      </div>
-    }
+      @if (errorMessage()) {
+        <div class="text-red-500 text-sm">
+          {{ errorMessage() }}
+        </div>
+      }
+    </div>
 
-    <div class="flex justify-end gap-2 pt-4">
+    <!-- BOTONES -->
+    <div class="col-span-6 flex justify-end gap-2 pt-4">
 
       <p-button
         label="Cancelar"
@@ -94,7 +107,7 @@
 
       <p-button
         [label]="mode === 'edit' ? 'Actualizar' : 'Guardar'"
-        (click)="submit()"
+        (click)="submit()" 
         [loading]="submitting()"
         [disabled]="form.invalid"
       ></p-button>
