@@ -1,6 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { RouteService } from './../../core/services/route.service';
-import { Route } from '../../shared/models/route.model';
+import { Route } from '../../core/models/route.model';
 
 @Component({
   selector: 'app-routes',
