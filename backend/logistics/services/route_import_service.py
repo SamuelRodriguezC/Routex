@@ -42,6 +42,11 @@ class RouteImportService:
         failed_status = Status.objects.get(description__iexact="FAILED")
         default_priority = Priority.objects.first()
 
+        # 🔥 NUEVO: métricas y errores globales
+        success_count = 0
+        failed_count = 0
+        errors_output = []
+
         for row_index, row in enumerate(
             sheet.iter_rows(min_row=2, values_only=True),
             start=2
@@ -52,7 +57,7 @@ class RouteImportService:
             row_errors = []
 
             # ==========================
-            # Validaciones
+            # VALIDACIONES
             # ==========================
 
             for field in RouteImportService.REQUIRED_FIELDS:
@@ -93,13 +98,16 @@ class RouteImportService:
                 row_errors.append("priority no existe")
 
             # ==========================
-            # Atomic POR FILA
+            # TRANSACCIÓN POR FILA
             # ==========================
 
             try:
                 with transaction.atomic():
 
+                    # ❌ CASO CON ERRORES
                     if row_errors:
+
+                        failed_count += 1
 
                         route = Route.objects.create(
                             origin=origin or "INVALID",
@@ -113,7 +121,16 @@ class RouteImportService:
 
                         ExecutionLogService.log_multiple_errors(route, row_errors)
 
+                        # 🔥 NUEVO: guardar errores para frontend
+                        errors_output.append({
+                            "row": row_index,
+                            "messages": row_errors
+                        })
+
+                    # ✅ CASO EXITOSO
                     else:
+
+                        success_count += 1
 
                         route = Route.objects.create(
                             origin=origin,
@@ -133,6 +150,8 @@ class RouteImportService:
 
             except IntegrityError:
 
+                failed_count += 1
+
                 existing_route = Route.objects.filter(
                     origin=origin,
                     destination=destination,
@@ -147,10 +166,22 @@ class RouteImportService:
                         message="Intento de insertar ruta duplicada"
                     )
 
+                    errors_output.append({
+                        "row": row_index,
+                        "messages": ["Ruta duplicada en el sistema"]
+                    })
+
                 continue
+
+        # ==========================
+        # RESPONSE FINAL MEJORADO
+        # ==========================
 
         return {
             "total_rows": total_rows,
             "processed": processed,
+            "success_count": success_count,
+            "failed_count": failed_count,
+            "errors": errors_output,
             "message": "Importación finalizada correctamente"
         }
