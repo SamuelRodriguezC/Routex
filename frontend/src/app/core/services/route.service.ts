@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Route } from '../../shared/models/route.model';
 import { tap } from 'rxjs';
+import { ImportResult } from '../../shared/interfaces/ImportResult';
 
 @Injectable({ providedIn: 'root' })
 export class RouteService {
@@ -25,7 +26,10 @@ export class RouteService {
     const formData = new FormData();
     formData.append('file', file);
 
-    return this.http.post(`${this.api}import`, formData);
+    return this.http.post<ImportResult>(
+      `${this.api}import/`,
+      formData
+    );
   }
 
   executeRoutes(routeIds: number[]) {

@@ -19,4 +19,10 @@ export const routes: Routes = [
 //       import('./features/execution-logs/pages/logs.page')
 //         .then(m => m.LogsPage)
 //   }
+  {
+    path: 'import',
+    loadComponent: () =>
+      import('./features/import/import.page')
+        .then(m => m.ImportPage)
+  }
 ];

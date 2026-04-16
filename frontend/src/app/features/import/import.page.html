@@ -1,0 +1,65 @@
+<div class="p-6 max-w-2xl mx-auto">
+
+  <h2 class="text-2xl font-bold mb-4">📦 Importación de Rutas</h2>
+
+  <!-- FILE INPUT -->
+  <input
+    type="file"
+    accept=".xlsx,.xls"
+    (change)="onFileSelected($event)"
+    class="block w-full border p-2 rounded mb-4"
+  />
+
+  <!-- BUTTON -->
+  <button
+    (click)="upload()"
+    [disabled]="loading() || !file()"
+    class="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
+  >
+    {{ loading() ? 'Procesando...' : 'Importar Excel' }}
+  </button>
+
+  <!-- PROGRESS BAR -->
+  <div *ngIf="processing()" class="mt-4">
+    <div class="w-full bg-gray-200 rounded h-3 overflow-hidden">
+      <div
+        class="bg-blue-500 h-3 transition-all"
+        [style.width.%]="progress()"
+      ></div>
+    </div>
+    <p class="text-sm mt-1">Procesando archivo... {{ progress() }}%</p>
+  </div>
+
+  <!-- SUCCESS -->
+  <div *ngIf="response()" class="mt-6 p-4 bg-green-100 rounded">
+    <h3 class="font-bold text-green-700">Resultado</h3>
+
+    <p>{{ response().message }}</p>
+
+    <ul class="mt-2 text-sm">
+      <li>📊 Total filas: {{ response().total_rows }}</li>
+      <li>✅ Válidas: {{ response().valid_rows }}</li>
+      <li>❌ Inválidas: {{ response().invalid_rows }}</li>
+    </ul>
+  </div>
+
+  <!-- ERRORS -->
+  <div *ngIf="response()?.errors?.length" class="mt-4 p-4 bg-red-100 rounded">
+    <h3 class="font-bold text-red-700">Errores encontrados</h3>
+
+    <div *ngFor="let err of response().errors" class="mt-2">
+      <p class="font-semibold">Fila {{ err.row }}</p>
+      <ul class="list-disc ml-5 text-sm">
+        <li *ngFor="let msg of err.messages">
+          {{ msg }}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ERROR GENERAL -->
+  <div *ngIf="error()" class="mt-4 p-3 bg-red-200 text-red-800 rounded">
+    {{ error() }}
+  </div>
+
+</div>

@@ -1,187 +1,59 @@
-import openpyxl
-from decimal import Decimal, InvalidOperation
-from django.db import transaction, IntegrityError
-from django.utils import timezone
-from django.utils.dateparse import parse_datetime
 from logistics.models import Route, Status, Priority
+from .importers.route_excel_reader import RouteExcelReader
+from .importers.route_validator import RouteValidator
+from .importers.route_persister import RoutePersister
 from .execution_log_service import ExecutionLogService
 
-
-def parse_aware_datetime(value):
-    if not value:
-        return None
-
-    dt = parse_datetime(str(value))
-    if dt and timezone.is_naive(dt):
-        dt = timezone.make_aware(dt)
-    return dt
-
-
 class RouteImportService:
-
-    REQUIRED_FIELDS = [
-        "origin",
-        "destination",
-        "distance_km",
-        "priority",
-        "time_window_start",
-        "time_window_end",
-        "status",
-    ]
 
     @staticmethod
     def import_routes(file):
 
-        workbook = openpyxl.load_workbook(file)
-        sheet = workbook.active
-        headers = [cell.value for cell in sheet[1]]
+        rows, total_rows = RouteExcelReader.read(file)
 
-        total_rows = sheet.max_row - 1
-        processed = 0
+        status_qs = Status.objects.all()
+        priority_qs = Priority.objects.all()
 
-        failed_status = Status.objects.get(description__iexact="FAILED")
-        default_priority = Priority.objects.first()
-
-        # 🔥 NUEVO: métricas y errores globales
-        success_count = 0
-        failed_count = 0
+        valid_rows = []
         errors_output = []
 
-        for row_index, row in enumerate(
-            sheet.iter_rows(min_row=2, values_only=True),
-            start=2
-        ):
+        # ==========================
+        # 1. VALIDACIÓN GLOBAL
+        # ==========================
+        for index, data in enumerate(rows, start=2):
 
-            processed += 1
-            data = dict(zip(headers, row))
-            row_errors = []
+            result = RouteValidator.validate(data, status_qs, priority_qs)
 
-            # ==========================
-            # VALIDACIONES
-            # ==========================
-
-            for field in RouteImportService.REQUIRED_FIELDS:
-                if not data.get(field):
-                    row_errors.append(f"{field} es obligatorio")
-
-            origin = str(data.get("origin", "")).strip()
-            destination = str(data.get("destination", "")).strip()
-
-            try:
-                distance = Decimal(str(data.get("distance_km")))
-                if distance <= 0:
-                    row_errors.append("distance_km debe ser mayor que 0")
-            except (InvalidOperation, TypeError):
-                row_errors.append("distance_km inválido")
-                distance = Decimal("0")
-
-            start_date = parse_aware_datetime(data.get("time_window_start"))
-            end_date = parse_aware_datetime(data.get("time_window_end"))
-
-            if not start_date or not end_date:
-                row_errors.append("Formato fecha inválido")
-            elif start_date >= end_date:
-                row_errors.append("Ventana de tiempo inválida")
-
-            status_obj = Status.objects.filter(
-                description__iexact=str(data.get("status", "")).strip()
-            ).first()
-
-            if not status_obj:
-                row_errors.append("status no existe")
-
-            priority_obj = Priority.objects.filter(
-                id=data.get("priority")
-            ).first()
-
-            if not priority_obj:
-                row_errors.append("priority no existe")
-
-            # ==========================
-            # TRANSACCIÓN POR FILA
-            # ==========================
-
-            try:
-                with transaction.atomic():
-
-                    # ❌ CASO CON ERRORES
-                    if row_errors:
-
-                        failed_count += 1
-
-                        route = Route.objects.create(
-                            origin=origin or "INVALID",
-                            destination=destination or "INVALID",
-                            distance_km=distance,
-                            time_window_start=start_date,
-                            time_window_end=end_date,
-                            status=failed_status,
-                            priority=priority_obj if priority_obj else default_priority
-                        )
-
-                        ExecutionLogService.log_multiple_errors(route, row_errors)
-
-                        # 🔥 NUEVO: guardar errores para frontend
-                        errors_output.append({
-                            "row": row_index,
-                            "messages": row_errors
-                        })
-
-                    # ✅ CASO EXITOSO
-                    else:
-
-                        success_count += 1
-
-                        route = Route.objects.create(
-                            origin=origin,
-                            destination=destination,
-                            distance_km=distance,
-                            time_window_start=start_date,
-                            time_window_end=end_date,
-                            status=status_obj,
-                            priority=priority_obj,
-                        )
-
-                        ExecutionLogService.log(
-                            route,
-                            result="SUCCESS",
-                            message="Ruta importada correctamente"
-                        )
-
-            except IntegrityError:
-
-                failed_count += 1
-
-                existing_route = Route.objects.filter(
-                    origin=origin,
-                    destination=destination,
-                    time_window_start=start_date,
-                    time_window_end=end_date,
-                ).first()
-
-                if existing_route:
-                    ExecutionLogService.log(
-                        existing_route,
-                        result="FAILED",
-                        message="Intento de insertar ruta duplicada"
-                    )
-
-                    errors_output.append({
-                        "row": row_index,
-                        "messages": ["Ruta duplicada en el sistema"]
-                    })
-
-                continue
+            if result["errors"]:
+                errors_output.append({
+                    "row": index,
+                    "messages": result["errors"]
+                })
+            else:
+                valid_rows.append(result["clean"])
 
         # ==========================
-        # RESPONSE FINAL MEJORADO
+        # 2. BLOQUEO SI HAY ERRORES
         # ==========================
+        if errors_output:
+            return {
+                "total_rows": total_rows,
+                "valid_rows": len(valid_rows),
+                "invalid_rows": len(errors_output),
+                "errors": errors_output,
+                "message": "Excel inválido. No se guardó ningún registro."
+            }
+
+        # ==========================
+        # 3. PERSISTENCIA GLOBAL
+        # ==========================
+        for clean in valid_rows:
+            Route.objects.create(**clean)
 
         return {
             "total_rows": total_rows,
-            "processed": processed,
-            "success_count": success_count,
-            "failed_count": failed_count,
-            "errors": errors_output,
-            "message": "Importación finalizada correctamente"
+            "valid_rows": len(valid_rows),
+            "invalid_rows": 0,
+            "errors": [],
+            "message": "Importación exitosa"
         }
