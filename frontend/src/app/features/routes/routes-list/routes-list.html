@@ -81,18 +81,18 @@
 
               <!-- Time window start -->
               <td>
-                {{ route.time_window_start }}
+                {{ formatDate(route.time_window_start) }}
               </td>
 
               <!-- Time window end -->
               <td>
-                {{ route.time_window_end }}
+                {{ formatDate(route.time_window_start) }}
               </td>
 
               <!-- Estado -->
                 <td>
                   <span
-                    class="badge"
+                    class="badge badge-soft badge-outline"
                     [ngClass]="getStatusBadgeClass(route.status_detail?.description)"
                   >
                     {{ route.status_detail?.description ?? 'UNKNOWN' }}

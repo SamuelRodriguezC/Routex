@@ -2,6 +2,7 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { getStatusBadgeClass } from '../../../shared/utils/helpers/route-status.helper';
+import { formatDate } from '../../../shared/utils/helpers/date-format.helper';
 import { RouteService } from '../../../core/services/route.service';
 import { Route } from '../../../core/models/route.model';
 
@@ -24,8 +25,9 @@ export class RoutesList implements OnInit {
   loading = signal(true);
 
   getStatusBadgeClass = getStatusBadgeClass;
-  
+
   showModal = signal(false);
+  formatDate = formatDate;
 
   constructor(
     private routeService: RouteService,
