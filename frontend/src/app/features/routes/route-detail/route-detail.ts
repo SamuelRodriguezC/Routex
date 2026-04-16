@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
+import { formatDateTimeLocal } from '../../../shared/utils/helpers/date-format.helper';
 import { RouteService } from '../../../core/services/route.service';
 import { StatusService } from '../../../core/services/status.service';
 import { PriorityService } from '../../../core/services/priority.service';
@@ -89,8 +89,9 @@ export class RouteDetail implements OnInit {
         origin: route.origin,
         destination: route.destination,
         distance_km: route.distance_km,
-        time_window_start: route.time_window_start,
-        time_window_end: route.time_window_end,
+        time_window_start: formatDateTimeLocal(route.time_window_start),
+        time_window_end: formatDateTimeLocal(route.time_window_end),
+
         
         //  IMPORTANTE: ahora trabajamos con IDs
         status: route.status,
