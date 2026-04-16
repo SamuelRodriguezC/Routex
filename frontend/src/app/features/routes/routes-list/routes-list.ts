@@ -1,8 +1,12 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+
 import { RouteService } from '../../../core/services/route.service';
 import { Route } from '../../../core/models/route.model';
-import { RouteFormComponent } from '../route-form/route-form';import { ButtonModule } from 'primeng/button';
+
+import { RouteFormComponent } from '../route-form/route-form';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-routes',
@@ -19,10 +23,12 @@ export class RoutesList implements OnInit {
   routes = signal<Route[]>([]);
   loading = signal(true);
 
-  // 👇 controla el modal
   showModal = signal(false);
 
-  constructor(private routeService: RouteService) {}
+  constructor(
+    private routeService: RouteService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.loadRoutes();
@@ -48,7 +54,10 @@ export class RoutesList implements OnInit {
   }
 
   onSaved() {
-    // Se ejecuta cuando el form emite saved
     this.loadRoutes();
+  }
+
+  editRoute(id: number) {
+    this.router.navigate(['/routes', id]);
   }
 }

@@ -1,5 +1,5 @@
 export interface Route {
-  id?: number;
+  id: number;
   origin: string;
   destination: string;
   distance_km: number;

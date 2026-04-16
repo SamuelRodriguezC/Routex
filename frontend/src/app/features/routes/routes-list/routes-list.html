@@ -38,6 +38,7 @@
             <th class="p-3">Fin ventana</th>
             <th class="p-3">Estado</th>
             <th class="p-3">Prioridad</th>
+            <th class="p-3">Acciones</th>
           </tr>
         </thead>
 
@@ -76,6 +77,16 @@
 
               <td class="p-3">
                 {{ route.priority }}
+              </td>
+
+              <!-- ⚙️ ACCIONES -->
+              <td class="p-3">
+                <button
+                  class="px-3 py-1 rounded bg-blue-500 text-white hover:bg-blue-600 transition"
+                  (click)="editRoute(route.id)"
+                >
+                  ✏️ Editar
+                </button>
               </td>
 
             </tr>
