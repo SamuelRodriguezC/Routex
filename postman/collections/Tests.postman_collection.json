@@ -1,0 +1,198 @@
+{
+  "info": {
+    "_postman_id": "65850258-cf37-4c06-b7cc-817f21d1f186",
+    "name": "Tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Importacion Masiva",
+      "id": "0e6afd86-b17b-4be6-8fc4-f7524e2aac3b",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "uuid": "0e269246-57c6-4c11-bd16-e2b6f71dfaf8",
+              "src": [
+                "/C:/Users/Samuel/Documents/masive_ok.xlsx"
+              ]
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8000/api/routes/import/",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "routes",
+            "import",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Creación Individual",
+      "id": "07f8965a-fccf-4817-94ba-6667e31725bd",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"origin\": \"Medellín\",\r\n  \"destination\": \"Bogotá\",\r\n  \"distance_km\": 415,\r\n  \"time_window_start\": \"2026-04-17T08:00:00\",\r\n  \"time_window_end\": \"2026-04-17T18:00:00\",\r\n  \"status\": 1,\r\n  \"priority\": 2\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8000/api/routes/",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "routes",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Listado general",
+      "id": "d75398dc-9dc9-4718-beca-322b8aeb96a1",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/api/routes/",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "routes",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Listado con filtros",
+      "id": "51496812-3c10-4506-8f19-c26b9c25b9c0",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/routes?status=2&priority=2&start_date=2026-01-01T00:00:00",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "routes"
+          ],
+          "query": [
+            {
+              "key": "status",
+              "value": "2",
+              "uuid": "77b224af-7303-4970-8e22-b35b3e92125d"
+            },
+            {
+              "key": "priority",
+              "value": "2",
+              "uuid": "b1d0c42c-9d03-4682-882d-57654854420d"
+            },
+            {
+              "key": "start_date",
+              "value": "2026-01-01T00:00:00",
+              "uuid": "320dcfac-637c-4347-9376-19dac1ab7f35"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Ejecucion de rutas",
+      "id": "69e31a71-b1b6-4fff-9026-404c6bdb87ae",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"route_ids\": [1, 2, 3, 4]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8000/api/routes/execute/",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "routes",
+            "execute",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Consulta de logs",
+      "id": "b1336fe5-17f1-4bb3-a946-fd7a63758e37",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/api/routes/1/logs/",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "routes",
+            "1",
+            "logs",
+            ""
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
