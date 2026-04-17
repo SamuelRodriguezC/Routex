@@ -5,15 +5,19 @@ from ..serializers import RouteSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import action
+from django_filters.rest_framework import DjangoFilterBackend
 from ..services.route_import_service import RouteImportService
 from ..services.route_execution_service import RoutesExecutionService
 from ..serializers.execution_log_serializer import ExecutionLogSerializer
+from logistics.filters.route_filter import RouteFilter
 
 
 class RouteViewSet(viewsets.ModelViewSet):
     queryset = Route.objects.all()
     serializer_class = RouteSerializer
     permission_classes = [permissions.AllowAny]
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = RouteFilter
 
     # Importar rutas desde Excel
     @action(detail=False, methods=["post"], url_path="import")
