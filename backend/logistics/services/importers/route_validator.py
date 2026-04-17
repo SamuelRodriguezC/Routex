@@ -67,7 +67,7 @@ class RouteValidator:
         if not start or not end:
             errors.append("Formato de fecha inválido en ventana de tiempo")
         elif start >= end:
-            errors.append("La ventana de tiempo es inválida (inicio >= fin)")
+            errors.append("La ventana de tiempo es inválida (inicio mayor que fin)")
 
         # -----------------------------------------------------
         # STATUS
