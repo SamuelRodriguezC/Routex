@@ -12,16 +12,25 @@ export class RouteService {
 
   constructor(private http: HttpClient) {}
 
+  // =========================
+  // LISTADO
+  // =========================
   getRoutes() {
     return this.http.get<Route[]>(this.api).pipe(
       tap(res => console.log('API RESPONSE:', res))
     );
   }
 
+  // =========================
+  // CREAR
+  // =========================
   createRoute(route: Route) {
     return this.http.post<Route>(this.api, route);
   }
 
+  // =========================
+  // IMPORT EXCEL
+  // =========================
   importExcel(file: File) {
     const formData = new FormData();
     formData.append('file', file);
@@ -32,19 +41,26 @@ export class RouteService {
     );
   }
 
+  // =========================
+  // EJECUCIÓN MASIVA 🔥 FIX AQUÍ
+  // =========================
   executeRoutes(routeIds: number[]) {
-    return this.http.post(`${this.api}execute`, {
-      routes: routeIds
+    return this.http.post(`${this.api}execute/`, {
+      route_ids: routeIds   // 👈 BACKEND EXPECTED FIELD
     });
   }
 
+  // =========================
+  // GET BY ID
+  // =========================
   getRouteById(id: number) {
     return this.http.get<Route>(`${this.api}${id}/`);
   }
 
+  // =========================
+  // UPDATE
+  // =========================
   updateRoute(id: number, route: Route) {
     return this.http.put<Route>(`${this.api}${id}/`, route);
   }
 }
-
-
