@@ -35,6 +35,7 @@ export class RoutesList implements OnInit {
   getStatusBadgeClass = getStatusBadgeClass;
   formatDate = formatDate;
 
+  hasSelectedRoutes = () => this.selectedRouteIds().length > 0;
   constructor(private routeService: RouteService) {}
 
   ngOnInit() {
