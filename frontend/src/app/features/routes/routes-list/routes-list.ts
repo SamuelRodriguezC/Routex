@@ -67,14 +67,17 @@ export class RoutesList implements OnInit {
     });
   }
 
-  setFilter(key: string, value: any) {
-    this.filters.update(current => ({
-      ...current,
-      [key]: value
-    }));
+setFilter(key: string, value: any) {
+  const cleanValue =
+    value === '' || value === null ? null : value;
 
-    this.loadRoutes();
-  }
+  this.filters.update(current => ({
+    ...current,
+    [key]: cleanValue
+  }));
+
+  this.loadRoutes();
+}
   loadRoutes() {
     this.loading.set(true);
 
@@ -106,7 +109,7 @@ export class RoutesList implements OnInit {
   }
 
   // =========================
-  // EJECUTAR MASIVO 🔥 NUEVO
+  // EJECUTAR MASIVO 
   // =========================
   executeSelectedRoutes() {
     const ids = this.selectedRouteIds();

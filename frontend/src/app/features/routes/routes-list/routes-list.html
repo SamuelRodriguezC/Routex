@@ -1,26 +1,19 @@
 <div class="p-6 space-y-6 flex flex-col justify-start">
-
   <!-- HEADER -->
   <div class="flex justify-between items-center">
-    <h1 class="text-2xl font-bold">
-      Rutas 📦
-    </h1>
+    <h1 class="text-2xl font-bold">Rutas 📦</h1>
 
     <div class="flex gap-2">
-    @if (hasSelectedRoutes()) {
-      <p-button
-        label="Ejecutar seleccionadas"
-        icon="pi pi-play"
-        severity="success"
-        (click)="executeSelectedRoutes()"
-      ></p-button>
-    }
+      @if (hasSelectedRoutes()) {
+        <p-button
+          label="Ejecutar seleccionadas"
+          icon="pi pi-play"
+          severity="success"
+          (click)="executeSelectedRoutes()"
+        ></p-button>
+      }
 
-      <p-button
-        label="Crear Ruta"
-        icon="pi pi-plus"
-        (click)="openCreate()"
-      ></p-button>
+      <p-button label="Crear Ruta" icon="pi pi-plus" (click)="openCreate()"></p-button>
     </div>
   </div>
 
@@ -37,52 +30,50 @@
   @if (loading()) {
     <p class="text-sm opacity-70">Cargando rutas...</p>
   }
-<div class="flex gap-2 flex-wrap">
+  <div class="flex gap-2 flex-wrap">
+    <!-- PRIORITY -->
+    <input
+      type="number"
+      placeholder="Priority ID"
+      class="input input-bordered"
+      (input)="setFilter('priority', $event.target.value)"
+    />
 
-  <!-- PRIORITY -->
-  <input
-    type="number"
-    placeholder="Priority ID"
-    class="input input-bordered"
-    (input)="setFilter('priority', $event.target.value)"
-  />
+    <!-- STATUS -->
+    <select
+      class="select select-bordered"
+      (change)="setFilter('status', $any($event.target).value)"
+    >
+      <option value="">Todos los estados</option>
 
-  <!-- STATUS -->
-  <input
-    type="number"
-    placeholder="Status ID"
-    class="input input-bordered"
-    (input)="setFilter('status', $event.target.value)"
-  />
+      @for (status of statuses(); track status.id) {
+        <option [value]="status.id">
+          {{ status.description }}
+        </option>
+      }
+    </select>
 
-  <!-- FECHA INICIO -->
-  <input
-    type="datetime-local"
-    class="input input-bordered"
-    (change)="setFilter('start_date', $event.target.value)"
-  />
+    <!-- FECHA INICIO -->
+    <input
+      type="datetime-local"
+      class="input input-bordered"
+      (change)="setFilter('start_date', $event.target.value)"
+    />
 
-  <!-- FECHA FIN -->
-  <input
-    type="datetime-local"
-    class="input input-bordered"
-    (change)="setFilter('end_date', $event.target.value)"
-  />
+    <!-- FECHA FIN -->
+    <input
+      type="datetime-local"
+      class="input input-bordered"
+      (change)="setFilter('end_date', $event.target.value)"
+    />
 
-  <button class="btn btn-outline" (click)="filters.set({}); loadRoutes()">
-    Reset
-  </button>
-
-</div>
+    <button class="btn btn-outline" (click)="filters.set({}); loadRoutes()">Reset</button>
+  </div>
   <!-- TABLE -->
   @if (!loading()) {
-
     <div class="flex justify-center">
-
       <div class="w-full max-w-8xl bg-white shadow-lg rounded-xl border overflow-x-auto p-4">
-
         <table class="table table-zebra w-full">
-
           <thead>
             <tr>
               <th></th>
@@ -98,10 +89,8 @@
           </thead>
 
           <tbody>
-
             @for (route of routes(); track route.id) {
               <tr>
-
                 <!-- CHECKBOX -->
                 <th>
                   <input
@@ -115,12 +104,8 @@
 
                 <td>
                   <div class="flex flex-col">
-                    <div class="font-bold">
-                      {{ route.origin }} → {{ route.destination }}
-                    </div>
-                    <div class="text-xs opacity-60">
-                      Ruta logística
-                    </div>
+                    <div class="font-bold">{{ route.origin }} → {{ route.destination }}</div>
+                    <div class="text-xs opacity-60">Ruta logística</div>
                   </div>
                 </td>
 
@@ -142,30 +127,14 @@
                 <td>{{ route.priority }}</td>
 
                 <td>
-                  <button
-                    class="btn btn-ghost btn-xs"
-                    (click)="editRoute(route)"
-                  >
-                    ✏️ Editar
-                  </button>
-                  <button
-                    class="btn btn-ghost btn-xs"
-                    (click)="viewLogs(route.id)"
-                  >
-                    📜 Logs
-                  </button>
+                  <button class="btn btn-ghost btn-xs" (click)="editRoute(route)">✏️ Editar</button>
+                  <button class="btn btn-ghost btn-xs" (click)="viewLogs(route.id)">📜 Logs</button>
                 </td>
-
               </tr>
             }
-
           </tbody>
-
         </table>
-
       </div>
     </div>
-
   }
-
 </div>
