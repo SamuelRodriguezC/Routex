@@ -15,8 +15,18 @@ export class RouteService {
   // =========================
   // LISTADO
   // =========================
-  getRoutes() {
-    return this.http.get<Route[]>(this.api).pipe(
+  getRoutes(filters?: any) {
+    let params: any = {};
+
+    if (filters) {
+      Object.keys(filters).forEach(key => {
+        if (filters[key] !== null && filters[key] !== '') {
+          params[key] = filters[key];
+        }
+      });
+    }
+
+    return this.http.get<Route[]>(this.api, { params }).pipe(
       tap(res => console.log('API RESPONSE:', res))
     );
   }

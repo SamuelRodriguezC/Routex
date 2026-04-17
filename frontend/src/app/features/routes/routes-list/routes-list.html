@@ -37,7 +37,43 @@
   @if (loading()) {
     <p class="text-sm opacity-70">Cargando rutas...</p>
   }
+<div class="flex gap-2 flex-wrap">
 
+  <!-- PRIORITY -->
+  <input
+    type="number"
+    placeholder="Priority ID"
+    class="input input-bordered"
+    (input)="setFilter('priority', $event.target.value)"
+  />
+
+  <!-- STATUS -->
+  <input
+    type="number"
+    placeholder="Status ID"
+    class="input input-bordered"
+    (input)="setFilter('status', $event.target.value)"
+  />
+
+  <!-- FECHA INICIO -->
+  <input
+    type="datetime-local"
+    class="input input-bordered"
+    (change)="setFilter('start_date', $event.target.value)"
+  />
+
+  <!-- FECHA FIN -->
+  <input
+    type="datetime-local"
+    class="input input-bordered"
+    (change)="setFilter('end_date', $event.target.value)"
+  />
+
+  <button class="btn btn-outline" (click)="filters.set({}); loadRoutes()">
+    Reset
+  </button>
+
+</div>
   <!-- TABLE -->
   @if (!loading()) {
 

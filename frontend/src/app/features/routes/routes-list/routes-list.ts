@@ -6,7 +6,7 @@ import { formatDate } from '../../../shared/utils/helpers/date-format.helper';
 
 import { RouteService } from '../../../core/services/route.service';
 import { Route } from '../../../core/models/route.model';
-
+import { StatusService } from '../../../core/services/status.service';
 import { RouteFormComponent } from '../route-form/route-form';
 import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
@@ -25,13 +25,20 @@ export class RoutesList implements OnInit {
 
   routes = signal<Route[]>([]);
   loading = signal(true);
+  statuses = signal<any[]>([]);
 
   showModal = signal(false);
   selectedRoute = signal<Route | null>(null);
 
-  // 🔥 NUEVO: selección múltiple
+  // selección múltiple
   selectedRouteIds = signal<number[]>([]);
 
+  filters = signal<Partial<{
+    priority: string;
+    status: string;
+    start_date: string;
+    end_date: string;
+  }>>({});
   // UI helpers
   getStatusBadgeClass = getStatusBadgeClass;
   formatDate = formatDate;
@@ -39,18 +46,39 @@ export class RoutesList implements OnInit {
   hasSelectedRoutes = () => this.selectedRouteIds().length > 0;
   constructor(
     private routeService: RouteService,
-    private router: Router
+    private router: Router,
+    private statusService: StatusService,
   
   ) {}
 
   ngOnInit() {
     this.loadRoutes();
+    this.loadStatuses();
   }
 
+  loadStatuses() {
+    this.statusService.getStatuses().subscribe({
+      next: (data) => {
+        this.statuses.set(data);
+      },
+      error: (err) => {
+        console.error('ERROR STATUSES:', err);
+      }
+    });
+  }
+
+  setFilter(key: string, value: any) {
+    this.filters.update(current => ({
+      ...current,
+      [key]: value
+    }));
+
+    this.loadRoutes();
+  }
   loadRoutes() {
     this.loading.set(true);
 
-    this.routeService.getRoutes().subscribe({
+    this.routeService.getRoutes(this.filters()).subscribe({
       next: (data) => {
         this.routes.set(data);
         this.loading.set(false);
@@ -115,6 +143,7 @@ export class RoutesList implements OnInit {
     this.selectedRoute.set(route);
     this.showModal.set(true);
   }
+  
 
   // =========================
   // VER LOGS
@@ -122,6 +151,8 @@ export class RoutesList implements OnInit {
   viewLogs(routeId: number) {
     this.router.navigate(['/routes/logs', routeId]);
   }
+
+  
   onSaved() {
     this.loadRoutes();
   }
