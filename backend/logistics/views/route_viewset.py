@@ -7,6 +7,7 @@ from rest_framework import status
 from rest_framework.decorators import action
 from ..services.route_import_service import RouteImportService
 from ..services.route_execution_service import RoutesExecutionService
+from ..serializers.execution_log_serializer import ExecutionLogSerializer
 
 
 class RouteViewSet(viewsets.ModelViewSet):
@@ -44,3 +45,16 @@ class RouteViewSet(viewsets.ModelViewSet):
             result = RoutesExecutionService.execute_routes(route_ids)
 
             return Response(result, status=status.HTTP_200_OK)
+        
+    # =====================================================
+    # 3 LOGS POR RUTA
+    # =====================================================
+    @action(detail=True, methods=["get"])
+    def logs(self, request, pk=None):
+        route = self.get_object()
+
+        logs = route.execution_logs.all().order_by("-execution_time")
+
+        serializer = ExecutionLogSerializer(logs, many=True)
+
+        return Response(serializer.data)
