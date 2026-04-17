@@ -1,5 +1,6 @@
 <div class="p-6 space-y-6 flex flex-col justify-start">
-  <!-- Header -->
+
+  <!-- HEADER -->
   <div class="flex justify-between items-center">
     <h1 class="text-2xl font-bold">
       Rutas 📦
@@ -12,87 +13,89 @@
     ></p-button>
   </div>
 
-  <!-- Modal -->
+  <!-- MODAL -->
   <app-route-form
     [visible]="showModal()"
     (visibleChange)="showModal.set($event)"
     (saved)="onSaved()"
-
     [routeToEdit]="selectedRoute()"
     [mode]="selectedRoute() ? 'edit' : 'create'"
   ></app-route-form>
 
-  <!-- Loading -->
+  <!-- LOADING -->
   @if (loading()) {
     <p class="text-sm opacity-70">Cargando rutas...</p>
   }
 
-  <!-- Table -->
+  <!-- TABLE CONTAINER -->
   @if (!loading()) {
 
-    <div class="overflow-x-auto">
+    <div class="flex justify-center">
 
-      <table class="table table-zebra">
+      <div class="w-full max-w-8xl bg-white shadow-lg rounded-xl border border-gray-100 overflow-x-auto p-4">
 
-        <!-- HEAD -->
-        <thead>
-          <tr>
-            <th></th>
-            <th>ID</th>
-            <th>Ruta</th>
-            <th>Distancia</th>
-            <th>Ventana inicio</th>
-            <th>Ventana fin</th>
-            <th>Estado</th>
-            <th>Prioridad</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
+        <table class="table table-zebra w-full">
 
-        <tbody>
-
-          @for (route of routes(); track route.id) {
+          <!-- HEAD -->
+          <thead>
             <tr>
-              <!-- Checkbox row -->
-              <th>
-                <label>
-                  <input type="checkbox" class="checkbox" />
-                </label>
-              </th>
+              <th></th>
+              <th>ID</th>
+              <th>Ruta</th>
+              <th>Distancia</th>
+              <th>Ventana inicio</th>
+              <th>Ventana fin</th>
+              <th>Estado</th>
+              <th>Prioridad</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
 
-              <!-- ID -->
-              <th>
-                {{ route.id }}
-              </th>
+          <tbody>
 
-              <!-- Ruta (Origen → Destino estilo bonito) -->
-              <td>
-                <div class="flex flex-col">
-                  <div class="font-bold">
-                    {{ route.origin }} → {{ route.destination }}
+            @for (route of routes(); track route.id) {
+              <tr>
+
+                <!-- Checkbox -->
+                <th>
+                  <label>
+                    <input type="checkbox" class="checkbox" />
+                  </label>
+                </th>
+
+                <!-- ID -->
+                <th>
+                  {{ route.id }}
+                </th>
+
+                <!-- Ruta -->
+                <td>
+                  <div class="flex flex-col">
+                    <div class="font-bold">
+                      {{ route.origin }} → {{ route.destination }}
+                    </div>
+                    <div class="text-xs opacity-60">
+                      Ruta logística
+                    </div>
                   </div>
-                  <div class="text-xs opacity-60">
-                    Ruta logística
-                  </div>
-                </div>
-              </td>
+                </td>
 
-              <!-- Distancia -->
-              <td>
-                {{ route.distance_km }} km
-              </td>
+                <!-- Distancia -->
+                <td>
+                  {{ route.distance_km }} km
+                </td>
 
-              <!-- Time window start -->
-              <td>
-                {{ formatDate(route.time_window_start) }}
-              </td>
+                <!-- Inicio -->
+                <td>
+                  {{ formatDate(route.time_window_start) }}
+                </td>
 
-              <!-- Time window end -->
-              <td>
-                {{ formatDate(route.time_window_start) }}
-              </td>
+                <!-- Fin -->
+                <td>
+                  {{ formatDate(route.time_window_start) }}
+                </td>
 
-              <!-- Estado -->
+                <!-- Estado -->
                 <td>
                   <span
                     class="badge badge-soft badge-outline"
@@ -102,43 +105,45 @@
                   </span>
                 </td>
 
-              <!-- Prioridad -->
-              <td>
+                <!-- Prioridad -->
+                <td>
                   {{ route.priority }}
-              </td>
+                </td>
 
-              <!-- Acciones -->
-              <th>
-                <button
-                  class="btn btn-ghost btn-xs"
-                  (click)="editRoute(route)"
-                >
-                  ✏️ Editar
-                </button>
-              </th>
+                <!-- Acciones -->
+                <th>
+                  <button
+                    class="btn btn-ghost btn-xs"
+                    (click)="editRoute(route)"
+                  >
+                    ✏️ Editar
+                  </button>
+                </th>
 
+              </tr>
+            }
+
+          </tbody>
+
+          <!-- FOOT -->
+          <tfoot>
+            <tr>
+              <th>ID</th>
+              <th>Ruta</th>
+              <th>Distancia</th>
+              <th>Inicio</th>
+              <th>Fin</th>
+              <th>Estado</th>
+              <th>Prioridad</th>
+              <th></th>
             </tr>
-          }
+          </tfoot>
 
-        </tbody>
+        </table>
 
-        <!-- FOOT -->
-        <tfoot>
-          <tr>
-            <th>ID</th>
-            <th>Ruta</th>
-            <th>Distancia</th>
-            <th>Inicio</th>
-            <th>Fin</th>
-            <th>Estado</th>
-            <th>Prioridad</th>
-            <th></th>
-          </tr>
-        </tfoot>
-
-      </table>
-
+      </div>
     </div>
+
   }
 
 </div>
