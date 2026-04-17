@@ -1,8 +1,10 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-
+import { formatDate } from '../../../shared/utils/helpers/date-format.helper';
 import { ExecutionLogService, RouteLogsResponse } from '../../../core/services/execution-log.service';
+import { Location } from '@angular/common';
+
 
 @Component({
   selector: 'app-route-logs',
@@ -17,14 +19,21 @@ export class RouteLogs implements OnInit {
   data = signal<RouteLogsResponse | null>(null);
   loading = signal(true);
 
+  formatDate = formatDate;
+
   constructor(
     private route: ActivatedRoute,
-    private logService: ExecutionLogService
+    private logService: ExecutionLogService,
+    private location: Location
   ) {}
 
   ngOnInit() {
     this.routeId = Number(this.route.snapshot.paramMap.get('id'));
     this.loadLogs();
+  }
+  
+  goBack() {
+    this.location.back();
   }
 
   loadLogs() {
