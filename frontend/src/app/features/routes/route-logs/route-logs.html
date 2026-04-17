@@ -1,0 +1,76 @@
+<div class="p-6 space-y-6">
+
+  <!-- HEADER -->
+  <div class="flex justify-between items-center">
+    <h1 class="text-2xl font-bold">
+      📦 Logs de Ruta
+    </h1>
+
+    <div class="text-sm opacity-70">
+      {{ data()?.route }}
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  @if (loading()) {
+    <p class="text-sm opacity-60">Cargando logs...</p>
+  }
+
+  <!-- EMPTY -->
+  @if (!loading() && data()?.total_logs === 0) {
+    <p class="text-sm opacity-60">
+      Esta ruta aún no tiene logs 🔍
+    </p>
+  }
+
+  <!-- LOGS -->
+  @if (!loading() && data()) {
+
+    <div class="bg-white shadow rounded-xl border p-4">
+
+      <div class="mb-3 text-sm opacity-70">
+        Total logs: {{ data()?.total_logs }}
+      </div>
+
+      <table class="table table-zebra w-full">
+
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Fecha</th>
+            <th>Resultado</th>
+            <th>Mensaje</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          @for (log of data()?.logs; track log.id) {
+            <tr>
+              <td>{{ log.id }}</td>
+
+              <td>
+                {{ log.execution_time | date:'medium' }}
+              </td>
+
+              <td>
+                <span
+                  class="badge"
+                  [ngClass]="log.result === 'SUCCESS'
+                    ? 'badge-success'
+                    : 'badge-error'"
+                >
+                  {{ log.result }}
+                </span>
+              </td>
+
+              <td>{{ log.message }}</td>
+            </tr>
+          }
+        </tbody>
+
+      </table>
+
+    </div>
+  }
+
+</div>

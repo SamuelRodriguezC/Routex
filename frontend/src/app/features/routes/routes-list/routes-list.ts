@@ -9,6 +9,7 @@ import { Route } from '../../../core/models/route.model';
 
 import { RouteFormComponent } from '../route-form/route-form';
 import { ButtonModule } from 'primeng/button';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-routes',
@@ -36,7 +37,11 @@ export class RoutesList implements OnInit {
   formatDate = formatDate;
 
   hasSelectedRoutes = () => this.selectedRouteIds().length > 0;
-  constructor(private routeService: RouteService) {}
+  constructor(
+    private routeService: RouteService,
+    private router: Router
+  
+  ) {}
 
   ngOnInit() {
     this.loadRoutes();
@@ -111,6 +116,12 @@ export class RoutesList implements OnInit {
     this.showModal.set(true);
   }
 
+  // =========================
+  // VER LOGS
+  // =========================
+  viewLogs(routeId: number) {
+    this.router.navigate(['/routes/logs', routeId]);
+  }
   onSaved() {
     this.loadRoutes();
   }

@@ -42,7 +42,7 @@ export class RouteService {
   }
 
   // =========================
-  // EJECUCIÓN MASIVA 🔥 FIX AQUÍ
+  // EJECUCIÓN MASIVA  FIX AQUÍ
   // =========================
   executeRoutes(routeIds: number[]) {
     return this.http.post(`${this.api}execute/`, {
