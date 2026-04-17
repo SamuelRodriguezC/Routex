@@ -57,4 +57,9 @@ class RouteViewSet(viewsets.ModelViewSet):
 
         serializer = ExecutionLogSerializer(logs, many=True)
 
-        return Response(serializer.data)
+        return Response({
+            "route_id": route.id,
+            "route": str(route),
+            "total_logs": logs.count(),
+            "logs": serializer.data
+        })
